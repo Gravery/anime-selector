@@ -12,14 +12,20 @@ def chooser(path, thing):
 
     chosen = list[num]
 
+    #Delete chosen line from the file
+    f = open(path, 'w')
+    for i in range(len(list)):
+        if (i != num):
+            f.write(list[i])
+
     print(f'The chosen {thing} was {chosen}')
 
-def add(path):
-    f = open(path, 'a')
-    name = input('Name to add: ')
-    f.write(f'{name}\n')
-    #add on file
+    return chosen
 
-    ans = input('Keep adding? y/n\n')
-    if ans.lower() == 'y':
-        add(path)
+def add(path, name=None):
+    f = open(path, 'a')
+
+    if name == None:
+        name = input('Name to add: ')
+    if name != '':
+        f.write(f'{name}\n')

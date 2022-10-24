@@ -1,5 +1,7 @@
 import pygame
 from funcs import *
+from inputBox import InputBox
+
 ANIMES_LIST = "Lists/animes.txt"
 MOVIES_LIST = "Lists/movies.txt"
 SERIES_LIST = "Lists/series.txt"
@@ -35,6 +37,10 @@ def menu():
     bAdd2 = button(screen, (270, 210), "Add", 30, "white on blue")
     bAdd3 = button(screen, (490, 210), "Add", 30, "white on blue")
 
+    input_box = InputBox(100, 100, 140, 32)
+
+    bResult = button(screen, (200, 300), "The chosen one is:", 30, "green on yellow")
+
     while True:
         for event in pygame.event.get():
             if (event.type == pygame.QUIT):
@@ -46,6 +52,10 @@ def menu():
                     pygame.quit()
                     exit()
                     
+            input_box.handle_event(event)
+            input_box.update()
+            input_box.draw(screen)
+
             if event.type == pygame.MOUSEBUTTONDOWN:
                 
                 #Check when you click if the coordinates of the pointer are in the rectangle of the buttons
@@ -53,11 +63,14 @@ def menu():
                     pygame.quit()
                     exit()
                 elif b1.collidepoint(pygame.mouse.get_pos()):
-                    chooser(ANIMES_LIST, 'anime')
+                    result = chooser(ANIMES_LIST, 'anime')
+                    bResult = button(screen, (200, 300), result, 30, "green on yellow")
                 elif b2.collidepoint(pygame.mouse.get_pos()):
-                    chooser(MOVIES_LIST, 'movie')
+                    result = chooser(MOVIES_LIST, 'movie')
+                    bResult = button(screen, (200, 300), result, 30, "green on yellow")
                 elif b3.collidepoint(pygame.mouse.get_pos()):
-                    chooser(SERIES_LIST, 'serie')
+                    result = chooser(SERIES_LIST, 'serie')
+                    bResult = button(screen, (200, 300), result, 30, "green on yellow")
 
                 elif bAdd1.collidepoint(pygame.mouse.get_pos()):
                     add(ANIMES_LIST)
@@ -65,6 +78,8 @@ def menu():
                     add(MOVIES_LIST)
                 elif bAdd3.collidepoint(pygame.mouse.get_pos()):
                     add(SERIES_LIST)
+
+        pygame.display.flip()
         pygame.display.update()
  
 menu()
