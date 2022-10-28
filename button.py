@@ -11,6 +11,7 @@ class Button(pygame.sprite.Sprite):
         super().__init__()
         self.text = text
         self.command = command
+        self.command_return = None
         # --- colors ---
         self.colors = colors
         self.original_colors = colors
@@ -76,7 +77,10 @@ class Button(pygame.sprite.Sprite):
         if self.rect.collidepoint(pygame.mouse.get_pos()):
             if pygame.mouse.get_pressed()[0] and self.pressed == 1:
                 print("Execunting code for button '" + self.text + "'")
-                self.command()
+                self.command_return = self.command()
                 self.pressed = 0
             if pygame.mouse.get_pressed() == (0,0,0):
                 self.pressed = 1
+
+    def getChosen(self):
+        return self.command_return

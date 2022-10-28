@@ -9,10 +9,12 @@ MOVIES_LIST = "Lists/movies.txt"
 SERIES_LIST = "Lists/series.txt"
 
 pygame.init()
+pygame.display.set_caption("Selector")
 clock = pygame.time.Clock()
 screen = pygame.display.set_mode((600, 400))
 buttons =  pygame.sprite.Group()
 input_box = InputBox(200, 250, 140, 32)
+chosen = 'The Chosen is...'
 
 def close():
     pygame.quit()
@@ -40,8 +42,20 @@ def creating():
 
 
 def handle_buttons():
+    previous_chosens = []
+    new_chosens = []
+    for button in buttons:
+        previous_chosens.append(button.getChosen())
     buttons.update()
     buttons.draw(screen)
+    for button in buttons:
+        new_chosens.append(button.getChosen())
+
+    global chosen
+    for i in range(4):
+        if previous_chosens[i] != new_chosens[i]:
+            chosen = new_chosens[i]
+
 
 def handle_add(path):
     name = input_box.getText()
@@ -52,6 +66,13 @@ def handle_add(path):
 def main():
     creating()
 
+    background = pygame.Surface(screen.get_size())
+    background = background.convert()
+    font = pygame.font.SysFont("Arial", 64)
+    title = font.render("Watch Selector", True, (255, 0, 0))
+    text = font.render(chosen, True, (255, 255, 255))
+    titlepos = title.get_rect(centerx=background.get_width() / 2, y = 10)
+    textpos = text.get_rect(centerx=background.get_width() / 2, y = 300)
 
     while True:
         for event in pygame.event.get():
@@ -66,6 +87,10 @@ def main():
             input_box.handle_event(event)
             input_box.update()
             screen.fill((30, 30, 30))
+            screen.blit(title, titlepos)
+            text = font.render(chosen, True, (255, 255, 255))
+            textpos = text.get_rect(centerx=background.get_width() / 2, y = 300)
+            screen.blit(text, textpos)
             input_box.draw(screen)
 
         handle_buttons()
